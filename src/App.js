@@ -15,34 +15,50 @@ function AddToList({textValue,setul,addTextValue,listItemValue}){
   function handleClick(value,e){
     e.preventDefault();
     if(value  !== ''){
-      setul([...listItemValue,value]);
-      console.log(listItemValue);
+      const objValue = {
+        value : value,
+        key : Math.floor(Math.random()*1000)
+      }
+      setul([...listItemValue,objValue]);
      }
+     addTextValue("");
   }
 
 }
-function ListOut({listItemValue}){
+function ListOut({listItemValue,setul}){
   /* Add key to li and delete that particular li */
   return(
     <>
       <ul>  
-      {listItemValue.map(item => <li>{item} 
-      <button>Delete</button>
+      {listItemValue.map(item => <li key={item.key}>{item.value} 
+      <button onClick={(e)=>handleDelete(e,item.key)}>Delete</button>
       </li>)}
       </ul>
     </>
   )
+
+  function handleDelete(e,delKey){
+    
+    e.preventDefault();
+    var index;
+     for( let i=0;i<listItemValue.length;i++){
+      if(listItemValue[i].key == delKey){
+        index=i;
+        console.log(index);
+      }
+    }
+    listItemValue.splice(index,1)
+    //console.log(listItemValue);
+    setul([...listItemValue]);
+  }
 }
 function App() {
   const [textValue,setTextValue]= useState('');
   const [listItemValue,setListItemValue] = useState([]);
-  /*function setTextValue(){
-
-  }*/
   return (
     <div className="App">
       <AddToList textValue={textValue} setul={setListItemValue} addTextValue={setTextValue} listItemValue={listItemValue}/>
-      <ListOut listItemValue={listItemValue}/>
+      <ListOut listItemValue={listItemValue} setul={setListItemValue}/>
       
     </div>
   );
