@@ -1,15 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Button, FormGroup } from 'react-bootstrap';
+import {Container} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 
 function AddToList({textValue,setul,addTextValue,listItemValue}){ 
   return(
-    <>
-      <form>
-      <input type='text'className='task' placeholder='Enter the items' required value={textValue} onChange={(e)=>addTextValue(e.target.value)} ></input>
-      <button onClick={(e)=>handleClick(textValue,e)}>Add</button>
-      </form>
-      <br/>
+    <>   
+      <Form>
+      <FormGroup className="formGroup">
+      <Form.Control type='text' className='task' placeholder='Add Items to List' required value={textValue} onChange={(e)=>addTextValue(e.target.value)} />
+      <Button variant='dark' onClick={(e)=>handleClick(textValue,e)}>Add</Button>
+      </FormGroup>
+      </Form>
     </>
   )
   function handleClick(value,e){
@@ -29,11 +36,11 @@ function ListOut({listItemValue,setul}){
   /* Add key to li and delete that particular li */
   return(
     <>
-      <ul>  
-      {listItemValue.map(item => <li key={item.key}>{item.value} 
-      <button onClick={(e)=>handleDelete(e,item.key)}>Delete</button>
-      </li>)}
-      </ul>
+      <ListGroup variant='flush' as='ol' numbered>
+      {listItemValue.map(item => <ListGroup.Item as='li' className='d-flex justify-content-between align-items-start' key={item.key}>{item.value} 
+      <Button variant='dark' onClick={(e)=>handleDelete(e,item.key)}>Delete</Button>
+      </ListGroup.Item>)}
+      </ListGroup>
     </>
   )
 
@@ -48,7 +55,6 @@ function ListOut({listItemValue,setul}){
       }
     }
     listItemValue.splice(index,1)
-    //console.log(listItemValue);
     setul([...listItemValue]);
   }
 }
@@ -57,9 +63,11 @@ function App() {
   const [listItemValue,setListItemValue] = useState([]);
   return (
     <div className="App">
+      <Container className='p-5 mt-5 bg-light rounded-4'>
+      <h2>Shopping List</h2>
       <AddToList textValue={textValue} setul={setListItemValue} addTextValue={setTextValue} listItemValue={listItemValue}/>
       <ListOut listItemValue={listItemValue} setul={setListItemValue}/>
-      
+      </Container>    
     </div>
   );
 }
